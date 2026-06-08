@@ -10,19 +10,20 @@ async def upload(file: UploadFile = File(...)):
     try:
         contents = await file.read()
 
-        df = pd.read_excel(
-            BytesIO(contents),
-            engine="openpyxl"
-        )
+        if not contents:
+            return {"error": "Empty file uploaded"}
+
+        df = pd.read_excel(BytesIO(contents), engine="openpyxl")
 
         return {
-            "status": "ok",
+            "status": "success",
             "columns": df.columns.tolist(),
-            "rows": len(df)
+            "rows": len(df),
+            "preview": df.head(3).to_dict()
         }
 
     except Exception as e:
         return {
-            "status": "error",
-            "message": str(e)
+            "status": "failed",
+            "error": str(e)
         }
