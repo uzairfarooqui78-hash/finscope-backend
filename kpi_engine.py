@@ -1,15 +1,8 @@
-
 def calculate_kpis(df):
 
-    revenue = df["revenue"].sum()
-    profit = df["profit"].sum()
-
-    gross_margin = (profit / revenue) * 100 if revenue else 0
-    liquidity = df["assets"].sum() / df["liabilities"].sum() if df["liabilities"].sum() else 0
-
     return {
-        "revenue": float(revenue),
-        "profit": float(profit),
-        "gross_margin": float(gross_margin),
-        "liquidity_ratio": float(liquidity)
+        "total_revenue": float(df["revenue"].sum()),
+        "total_cost": float(df["cost"].sum()),
+        "total_customers": float(df["customers"].sum()),
+        "avg_revenue_per_customer": float(df["revenue"].sum() / max(df["customers"].sum(), 1))
     }
